@@ -1,0 +1,19 @@
+### IDE
+.idea
+.vscode
+
+# Chaches
+__pycache__
+.mypy_cache
+.angular
+.pytest_cache
+
+# Enviroment files
+/backend/local.env
+/backend/prod.env
+
+# Logs
+*.log
+
+# db
+db.sqlite3
