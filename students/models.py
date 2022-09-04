@@ -15,5 +15,9 @@ class Class(TimeStampedAddedByModel):
     def get_name(self):
         return f"{self.year}-{self.letter_id}"
 
+    @property
+    def name(self):
+        return self.get_name()
+
     def __str__(self):
         return self.get_name()

@@ -1,0 +1,79 @@
+{% load myfilters%}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Рассписания занятий</h2>
+
+<table>
+
+  <tr>
+    <th>Класс</th>
+    <th>Урок №</th>
+    <th>Звонки</th>
+    <th>Понедельник ()</th>
+    <th>Вторник ()</th>
+    <th>Среда ()</th>
+    <th>Четверг ()</th>
+    <th>Пятница ()</th>
+  </tr>
+
+  <tr>
+    <td rowspan="7">1-А</td>
+    <td>1 Урок</td>
+    <td>8.30 - 9.15</td>
+  </tr>
+
+  <tr>
+    <td>2 Урок</td>
+    <td>9.25 - 10.10</td>
+  </tr>
+
+  <tr>
+    <td>3 Урок</td>
+    <td>10.20 - 11.05</td>
+  </tr>
+
+  <tr>
+    <td>4 Урок</td>
+    <td>11.25 - 12.10</td>
+  </tr>
+
+  <tr>
+    <td>5 Урок</td>
+    <td>12.30 - 13.15</td>
+  </tr>
+
+  <tr>
+    <td>6 Урок</td>
+    <td>13.25 - 14.10</td>
+  </tr>
+
+  <tr>
+    <td>7 Урок</td>
+    <td>14.20 - 15.05</td>
+  </tr>
+
+</table>
+
+</body>
+</html>

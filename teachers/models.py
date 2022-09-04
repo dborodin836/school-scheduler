@@ -30,4 +30,4 @@ class Workload(models.Model):
         verbose_name_plural = "Нагрузка учителей"
 
     def __str__(self):
-        return f"{self.teacher.name} - {self.klass.get_name()} ({self.workload} часов)"
+        return f"{self.teacher.name} - {self.klass.get_name()} ({self.workload} часов {self.lessons})"
