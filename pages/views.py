@@ -179,13 +179,27 @@ def generate(request):
     while week < 18:
         for klass in Class.objects.all():
             day_offset_generator = five_numbers_generator()
-            lesson_no_generator = four_numbers_generator()
             for workload in Workload.objects.filter(klass=klass).order_by("workload"):
                 for item in range(workload.workload):
+                    lesson_no_generator = four_numbers_generator()
+
+                    date = first_available_date + datetime.timedelta(
+                        days=next(day_offset_generator),
+                        weeks=(1 * week) - 1
+                    )
+
+                    available_dates = workload.teacher.get_available_lessons(date)
+                    if available_dates is None:
+                        raise Exception("STFU")
+                    else:
+                        lesson_no = next(lesson_no_generator)
+                        while lesson_no not in available_dates:
+                            lesson_no = next(lesson_no_generator)
+
                     ScheduleItem.objects.create(
-                        date=first_available_date + datetime.timedelta(days=next(day_offset_generator), weeks=(1 * week) - 1),
+                        date=date,
                         workload=workload,
-                        lesson_no=next(lesson_no_generator))
+                        lesson_no=lesson_no)
         week += 1
 
     return HttpResponse("ok")

@@ -1,7 +1,6 @@
 from django.db import models
 
 from core.models import TimeStampedAddedByModel
-from teachers.models import Teacher, Workload
 
 
 class Lesson(TimeStampedAddedByModel):
@@ -27,7 +26,7 @@ class ScheduleItem(models.Model):
         ('7', '7 урок')
     ]
     lesson_no = models.CharField(choices=CHOICES, max_length=15)
-    workload = models.ForeignKey(Workload, on_delete=models.CASCADE)
+    workload = models.ForeignKey("teachers.Workload", on_delete=models.CASCADE)
     date = models.DateField(verbose_name="Дата", default="2022-1-1")
 
     def __str__(self):

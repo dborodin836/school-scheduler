@@ -1,8 +1,7 @@
 from django.db import models
 
 from core.models import TimeStampedAddedByModel
-# from lessons.models import Lesson
-from students.models import Class
+from lessons.models import ScheduleItem
 
 
 class Teacher(TimeStampedAddedByModel):
@@ -14,14 +13,23 @@ class Teacher(TimeStampedAddedByModel):
         verbose_name = "Учитель"
         verbose_name_plural = "Учителя"
 
+    def get_available_lessons(self, date):
+        available_lesson = {1, 2, 3, 4, 5, 6, 7}
+        query = ScheduleItem.objects.filter(workload__teacher=self, date=date).values_list("lesson_no")
+        query = set(map(lambda x: int(x[0]), query))
+        result = available_lesson.difference(set(query))
+        if not result:
+            return None
+        return result
+
     def __str__(self):
         return self.name
 
 
 class Workload(models.Model):
 
-    klass = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name="Класс")
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name="Учитель")
+    klass = models.ForeignKey("students.Class", on_delete=models.CASCADE, verbose_name="Класс")
+    teacher = models.ForeignKey("Teacher", on_delete=models.CASCADE, verbose_name="Учитель")
     workload = models.PositiveSmallIntegerField(verbose_name="Нагрузка", default=0)
     lessons = models.ForeignKey("lessons.Lesson", on_delete=models.CASCADE, verbose_name="Предмет")
 
