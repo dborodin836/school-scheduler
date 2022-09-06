@@ -7,7 +7,10 @@ register = template.Library()
 
 @register.filter
 def first(value):
-    return value[0]
+    try:
+        return value[0]
+    except IndexError:
+        return None
 
 
 @register.filter

@@ -22,7 +22,7 @@ tr:nth-child(even) {
 </head>
 <body>
 
-<h2>Рассписания занятий</h2>
+<h2>Рассписания занятий ({{ date.monday }} - {{ date.friday }})</h2>
 
 <table>
 
@@ -30,48 +30,85 @@ tr:nth-child(even) {
     <th>Класс</th>
     <th>Урок №</th>
     <th>Звонки</th>
-    <th>Понедельник ()</th>
-    <th>Вторник ()</th>
-    <th>Среда ()</th>
-    <th>Четверг ()</th>
-    <th>Пятница ()</th>
+    <th>Понедельник ({{ date.monday }})</th>
+    <th>Вторник ({{ date.tuesday }})</th>
+    <th>Среда ({{ date.wednesday }})</th>
+    <th>Четверг ({{ date.thursday }})</th>
+    <th>Пятница ({{ date.friday }})</th>
   </tr>
 
+  {% for class in classes %}
   <tr>
-    <td rowspan="7">1-А</td>
-    <td>1 Урок</td>
-    <td>8.30 - 9.15</td>
-  </tr>
+    <td rowspan="8">{{ class }}</td>
+        <tr>
+            <td>1 Урок</td>
+            <td>8.30 - 9.15</td>
+            <td>{% if class.l1lm %}{{ class.l1lm|first }}{% endif %}</td>
+            <td>{% if class.l1ltu %}{{ class.l1ltu|first }}{% endif %}</td>
+            <td>{% if class.l1lwd %}{{ class.l1lwd|first }}{% endif %}</td>
+            <td>{% if class.l1lth %}{{ class.l1lth|first }}{% endif %}</td>
+            <td>{% if class.l1lf %}{{ class.l1lf|first }}{% endif %}</td>
+          </tr>
 
-  <tr>
-    <td>2 Урок</td>
-    <td>9.25 - 10.10</td>
-  </tr>
+          <tr>
+            <td>2 Урок</td>
+            <td>9.25 - 10.10</td>
+            <td>{% if class.l2lm %}{{ class.l2lm|first }}{% endif %}</td>
+            <td>{% if class.l2ltu %}{{ class.l2ltu|first }}{% endif %}</td>
+            <td>{% if class.l2lwd %}{{ class.l2lwd|first }}{% endif %}</td>
+            <td>{% if class.l2lth %}{{ class.l2lth|first }}{% endif %}</td>
+            <td>{% if class.l2lf %}{{ class.l2lf|first }}{% endif %}</td>
+          </tr>
 
-  <tr>
-    <td>3 Урок</td>
-    <td>10.20 - 11.05</td>
-  </tr>
+          <tr>
+            <td>3 Урок</td>
+            <td>10.20 - 11.05</td>
+            <td>{% if class.l3lm %}{{ class.l3lm|first }}{% endif %}</td>
+            <td>{% if class.l3ltu %}{{ class.l3ltu|first }}{% endif %}</td>
+            <td>{% if class.l3lwd %}{{ class.l3lwd|first }}{% endif %}</td>
+            <td>{% if class.l3lth %}{{ class.l3lth|first }}{% endif %}</td>
+            <td>{% if class.l3lf %}{{ class.l3lf|first }}{% endif %}</td>
+          </tr>
+          <tr>
+            <td>4 Урок</td>
+            <td>11.25 - 12.10</td>
+            <td>{% if class.l4lm %}{{ class.l4lm|first }}{% endif %}</td>
+            <td>{% if class.l4ltu %}{{ class.l4ltu|first }}{% endif %}</td>
+            <td>{% if class.l4lwd %}{{ class.l4lwd|first }}{% endif %}</td>
+            <td>{% if class.l4lth %}{{ class.l4lth|first }}{% endif %}</td>
+            <td>{% if class.l4lf %}{{ class.l4lf|first }}{% endif %}</td>
+          </tr>
 
-  <tr>
-    <td>4 Урок</td>
-    <td>11.25 - 12.10</td>
-  </tr>
+          <tr>
+            <td>5 Урок</td>
+            <td>12.30 - 13.15</td>
+            <td>{% if class.l5lm %}{{ class.l5lm|first }}{% endif %}</td>
+            <td>{% if class.l5ltu %}{{ class.l5ltu|first }}{% endif %}</td>
+            <td>{% if class.l5lwd %}{{ class.l5lwd|first }}{% endif %}</td>
+            <td>{% if class.l5lth %}{{ class.l5lth|first }}{% endif %}</td>
+            <td>{% if class.l5lf %}{{ class.l5lf|first }}{% endif %}</td>
+          </tr>
 
-  <tr>
-    <td>5 Урок</td>
-    <td>12.30 - 13.15</td>
-  </tr>
+          <tr>
+            <td>6 Урок</td>
+            <td>13.25 - 14.10</td>
+            <td>{% if class.l6lm %}{{ class.l6lm|first }}{% endif %}</td>
+            <td>{% if class.l6ltu %}{{ class.l6ltu|first }}{% endif %}</td>
+            <td>{% if class.l6lwd %}{{ class.l6lwd|first }}{% endif %}</td>
+            <td>{% if class.l6lth %}{{ class.l6lth|first }}{% endif %}</td>
+            <td>{% if class.l6lf %}{{ class.l6lf|first }}{% endif %}</td>
+          </tr>
 
-  <tr>
-    <td>6 Урок</td>
-    <td>13.25 - 14.10</td>
-  </tr>
-
-  <tr>
-    <td>7 Урок</td>
-    <td>14.20 - 15.05</td>
-  </tr>
+          <tr>
+            <td>7 Урок</td>
+            <td>14.20 - 15.05</td>
+            <td>{% if class.l7lm %}{{ class.l7lm|first }}{% endif %}</td>
+            <td>{% if class.l7ltu %}{{ class.l7ltu|first }}{% endif %}</td>
+            <td>{% if class.l7lwd %}{{ class.l7lwd|first }}{% endif %}</td>
+            <td>{% if class.l7lth %}{{ class.l7lth|first }}{% endif %}</td>
+            <td>{% if class.l7lf %}{{ class.l7lf|first }}{% endif %}</td>
+          </tr>
+  {% endfor %}
 
 </table>
 
