@@ -35,3 +35,4 @@ class ScheduleItem(models.Model):
     class Meta:
         verbose_name = "Ячейка рассписания"
         verbose_name_plural = "Ячейки рассписания"
+        unique_together = [["lesson_no", "workload", "date"]]
