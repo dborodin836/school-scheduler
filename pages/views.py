@@ -181,7 +181,7 @@ def manual_creation(start_date, workload) -> bool:
     return False
 
 
-def get_available_lesson_num_week(monday_date: datetime.datetime | datetime.date, workload: Workload) -> int:
+def get_available_lesson_num_week(monday_date: datetime.datetime | datetime.date, workload: Workload):
     gen = iter(range(0, 6))
     iteration = next(gen)
     print(iteration)
@@ -210,18 +210,23 @@ def generate(request):
 
     first_available_date = datetime.date(year=datetime.date.today().year, month=9, day=4)
     for week in range(1, WEEK_AMOUNT):
-        for klass in Class.objects.all():
 
-            for workload in Workload.objects.filter(klass=klass,
-                                                    workload__range=[1, 40]).order_by("workload"):
+            for workload in Workload.objects.filter(workload__range=[1, 40]).order_by("workload"):
                 day_offset_generator_int = five_numbers_generator()
 
                 for item in range(int(workload.workload)):
 
-                    date_to_create = first_available_date + datetime.timedelta(
-                        days=next(day_offset_generator_int),
-                        weeks=(1 * week) - 1
-                    )
+                    try:
+                        date_to_create = first_available_date + datetime.timedelta(
+                            days=next(day_offset_generator_int),
+                            weeks=(1 * week) - 1
+                        )
+                    except StopIteration:
+                        day_offset_generator_int = five_numbers_generator()
+                        date_to_create = first_available_date + datetime.timedelta(
+                            days=next(day_offset_generator_int),
+                            weeks=(1 * week) - 1
+                        )
 
                     # Finding the available lesson number
                     while True:
@@ -231,7 +236,7 @@ def generate(request):
                         if available_lessons_no is None:
                             available_lessons_no = {}
 
-                        query = ScheduleItem.objects.filter(workload__klass=klass,
+                        query = ScheduleItem.objects.filter(workload__klass=workload.klass,
                                                             date=date_to_create).values_list("lesson_no")
                         query = set(map(lambda x: int(x[0]), query))
                         available_lessons_no = list(set(available_lessons_no).difference(query))
@@ -246,7 +251,7 @@ def generate(request):
                                 )
                             except StopIteration:
                                 date_monday = first_available_date + datetime.timedelta(weeks=(1 * week) - 1)
-                                get_available_lesson_num_week(date_monday, workload)
+                                available_lessons_no = get_available_lesson_num_week(date_monday, workload)
                                 break
 
                             continue
