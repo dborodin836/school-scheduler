@@ -182,13 +182,16 @@ def manual_creation(start_date, workload) -> bool:
 
 
 def get_available_lesson_num_week(monday_date: datetime.datetime | datetime.date, workload: Workload) -> int:
-    # breakpoint()
     gen = iter(range(0, 6))
     iteration = next(gen)
     print(iteration)
     date = monday_date + datetime.timedelta(days=iteration)
     while True:
         available_lessons_no = workload.teacher.get_available_lessons(date)
+        query = ScheduleItem.objects.filter(workload__klass=workload.klass,
+                                            date=date).values_list("lesson_no")
+        query = set(map(lambda x: int(x[0]), query))
+        available_lessons_no = list(set(available_lessons_no).difference(query))
         if available_lessons_no is None:
             try:
                 next(gen)
@@ -223,7 +226,18 @@ def generate(request):
                     # Finding the available lesson number
                     while True:
                         available_lessons_no = workload.teacher.get_available_lessons(date_to_create)
+                        logger.debug(f"Date {date_to_create} | {workload} | iter {item}")
+
                         if available_lessons_no is None:
+                            available_lessons_no = {}
+
+                        query = ScheduleItem.objects.filter(workload__klass=klass,
+                                                            date=date_to_create).values_list("lesson_no")
+                        query = set(map(lambda x: int(x[0]), query))
+                        available_lessons_no = list(set(available_lessons_no).difference(query))
+                        logger.debug(f"Lesson No. {available_lessons_no}")
+
+                        if available_lessons_no is None or not available_lessons_no:
 
                             try:
                                 date_to_create = first_available_date + datetime.timedelta(
@@ -243,84 +257,5 @@ def generate(request):
                     ScheduleItem.objects.create(date=date_to_create,
                                                 workload=workload,
                                                 lesson_no=lesson_no_to_create)
-
-    return HttpResponse("ok")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def generate1(request):
-    ScheduleItem.objects.all().delete()
-    first_available_date = datetime.date(year=datetime.date.today().year, month=9, day=4)
-    week = 1
-    while week < 18:
-        for klass in Class.objects.all():
-            day_offset_generator_int = five_numbers_generator()
-            for workload in Workload.objects.filter(klass=klass, workload__range=[1, 40]).order_by("workload"):
-                for item in range(int(workload.workload)):
-                    manual_creation_flag = False
-                    lesson_no_generator = week_day_generator()
-
-                    date = first_available_date + datetime.timedelta(
-                        days=next(day_offset_generator_int),
-                        weeks=(1 * week) - 1
-                    )
-
-                    available_lessons_numbers = workload.teacher.get_available_lessons(date)
-                    if available_lessons_numbers is None:
-                        new_date = first_available_date + datetime.timedelta(weeks=(1 * week) - 1)
-                        if manual_creation(new_date, workload):
-                            manual_creation_flag = True
-                        else:
-                            raise Exception("STFU")
-                    else:
-                        lesson_no = next(lesson_no_generator)
-                        while lesson_no not in available_lessons_numbers:
-                            lesson_no = next(lesson_no_generator)
-
-                    if not manual_creation_flag:
-                        ScheduleItem.objects.create(date=date,
-                                                    workload=workload,
-                                                    lesson_no=lesson_no)
-
-            day_offset_generator_decimal = five_numbers_generator()
-            for workload in Workload.objects.filter(klass=klass, workload=0.5).order_by("workload"):
-                lesson_no_generator = week_day_generator()
-
-                date = first_available_date + datetime.timedelta(
-                    days=next(day_offset_generator_decimal),
-                    weeks=(1 * week) - 1
-                )
-
-                available_lessons_numbers = workload.teacher.get_available_lessons(date)
-                if available_lessons_numbers is None:
-                    raise Exception("STFU")
-                else:
-                    lesson_no = next(lesson_no_generator)
-                    while lesson_no not in available_lessons_numbers:
-                        lesson_no = next(lesson_no_generator)
-
-                if week % 2 == 0:
-                    ScheduleItem.objects.create(
-                        date=date,
-                        workload=workload,
-                        lesson_no=lesson_no)
-
-        week += 1
 
     return HttpResponse("ok")
