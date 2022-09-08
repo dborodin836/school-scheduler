@@ -1,0 +1,309 @@
+{% load myfilters%}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Рассписания занятий ({{ date.monday }} - {{ date.friday }})</h2>
+
+<table>
+
+  <tr>
+      <th>Дата \ Класс</th>
+        <th>№</th>
+      {% for class in classes %}
+        <th>{{ class }}</th>
+      {% endfor %}
+  </tr>
+
+  <tr>
+     <td rowspan="8">Понедельник ({{ date.monday }})</td>
+  </tr>
+
+  <tr>
+      <td>1</td>
+      {% for class in classes %}
+        <td>{% if class.l1lf  %}{{ class.l1lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>2</td>
+      {% for class in classes %}
+        <td>{% if class.l2lf  %}{{ class.l2lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>3</td>
+      {% for class in classes %}
+        <td>{% if class.l3lf  %}{{ class.l3lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>4</td>
+      {% for class in classes %}
+        <td>{% if class.l4lf  %}{{ class.l4lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>5</td>
+      {% for class in classes %}
+        <td>{% if class.l5lf  %}{{ class.l5lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>6</td>
+      {% for class in classes %}
+        <td>{% if class.l6lf  %}{{ class.l6lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>7</td>
+      {% for class in classes %}
+        <td>{% if class.l7lf  %}{{ class.l7lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+
+  <tr>
+     <td rowspan="8">Вторник ({{ date.tuesday }})</td>
+  </tr>
+
+  <tr>
+    <td>1</td>
+      {% for class in classes %}
+        <td>{% if class.l1ltu  %}{{ class.l1ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+    <td>2</td>
+      {% for class in classes %}
+        <td>{% if class.l2ltu  %}{{ class.l2ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+    <td>3</td>
+      {% for class in classes %}
+        <td>{% if class.l3ltu  %}{{ class.l3ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>4</td>
+      {% for class in classes %}
+        <td>{% if class.l4ltu  %}{{ class.l4ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>5</td>
+      {% for class in classes %}
+        <td>{% if class.l5ltu  %}{{ class.l5ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>6</td>
+      {% for class in classes %}
+        <td>{% if class.l6ltu  %}{{ class.l6ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>7</td>
+      {% for class in classes %}
+        <td>{% if class.l7ltu  %}{{ class.l7ltu|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+
+  <tr>
+     <td rowspan="8">Среда ({{ date.wednesday }})</td>
+  </tr>
+
+  <tr>
+      <td>1</td>
+      {% for class in classes %}
+        <td>{% if class.l1lwd  %}{{ class.l1lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>2</td>
+      {% for class in classes %}
+        <td>{% if class.l2lwd  %}{{ class.l2lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>3</td>
+      {% for class in classes %}
+        <td>{% if class.l3lwd  %}{{ class.l3lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>4</td>
+      {% for class in classes %}
+        <td>{% if class.l4lwd  %}{{ class.l4lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+        <td>5</td>
+      {% for class in classes %}
+        <td>{% if class.l5lwd  %}{{ class.l5lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>6</td>
+      {% for class in classes %}
+        <td>{% if class.l6lwd  %}{{ class.l6lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+    <td>7</td>
+      {% for class in classes %}
+        <td>{% if class.l7lwd  %}{{ class.l7lwd|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+
+  <tr>
+     <td rowspan="8">Четверг ({{ date.thursday }})</td>
+  </tr>
+
+  <tr>
+  <td>1</td>
+      {% for class in classes %}
+        <td>{% if class.l1lth  %}{{ class.l1lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>2</td>
+      {% for class in classes %}
+        <td>{% if class.l2lth  %}{{ class.l2lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>3</td>
+      {% for class in classes %}
+        <td>{% if class.l3lth  %}{{ class.l3lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>4</td>
+      {% for class in classes %}
+        <td>{% if class.l4lth  %}{{ class.l4lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>5</td>
+      {% for class in classes %}
+        <td>{% if class.l5lth  %}{{ class.l5lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>6</td>
+      {% for class in classes %}
+        <td>{% if class.l6lth  %}{{ class.l6lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>7</td>
+      {% for class in classes %}
+        <td>{% if class.l7lth  %}{{ class.l7lth|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+
+  <tr>
+     <td rowspan="8">Пятница ({{ date.friday }})</td>
+  </tr>
+
+  <tr>
+  <td>1</td>
+      {% for class in classes %}
+        <td>{% if class.l1lf  %}{{ class.l1lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+      <td>2</td>
+      {% for class in classes %}
+        <td>{% if class.l2lf  %}{{ class.l2lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>3</td>
+      {% for class in classes %}
+        <td>{% if class.l3lf  %}{{ class.l3lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>4</td>
+      {% for class in classes %}
+        <td>{% if class.l4lf  %}{{ class.l4lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>5</td>
+      {% for class in classes %}
+        <td>{% if class.l5lf  %}{{ class.l5lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>6</td>
+      {% for class in classes %}
+        <td>{% if class.l6lf  %}{{ class.l6lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+  <tr>
+  <td>7</td>
+      {% for class in classes %}
+        <td>{% if class.l7lf  %}{{ class.l7lf|first }}{% endif %}</td>
+      {% endfor %}
+  </tr>
+
+</table>
+
+</body>
+</html>
