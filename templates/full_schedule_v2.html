@@ -305,5 +305,11 @@ tr:nth-child(even) {
 
 </table>
 
+<div style="width: 20%; margin-top: 1.5rem; margin-left: 1.5rem">
+    <span style="padding-right: 35px"><a {% if week.prev == 0 %}style="pointer-events: none"{% endif %} href="/full/v2?week={{ week.prev }}">← Назад</a></span>
+    <span style="padding-right: 35px"><a href='/home'>Домой</a></span>
+    <span><a {% if week.next == 19 %}style="pointer-events: none"{% endif %} href="/full/v2?week={{ week.next }}">Вперёд→</a></span>
+</div>
+
 </body>
 </html>

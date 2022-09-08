@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
@@ -17,78 +18,11 @@ class FullSchedule(TemplateView):
         context = super().get_context_data(**kwargs)
 
         week = int(self.request.GET.get("week")) - 1
-        sep1_week = datetime.date(year=datetime.date.today().year, month=9, day=1).isocalendar().week + week
-        # В случае если 1 сентября не являестя понедельником, необходим первый день недели.
-        first_day_on_school_year_week = datetime.datetime.strptime(f"{datetime.date.today().year}-W{sep1_week}" + '-1', "%Y-W%W-%w")
-        context["date"] = {
-            "monday": first_day_on_school_year_week.strftime("%Y-%m-%d"),
-            "tuesday": (first_day_on_school_year_week + datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
-            "wednesday": (first_day_on_school_year_week + datetime.timedelta(days=2)).strftime("%Y-%m-%d"),
-            "thursday": (first_day_on_school_year_week + datetime.timedelta(days=3)).strftime("%Y-%m-%d"),
-            "friday": (first_day_on_school_year_week + datetime.timedelta(days=4)).strftime("%Y-%m-%d")
+        context["week"] = {
+            "next": week + 2,
+            "prev": week
         }
 
-        classes = [*Class.objects.all().order_by("year", "letter_id")]
-        for klass in classes:
-
-            items = ScheduleItem.objects.filter(workload__klass_id=klass)
-
-            mondays = items.filter(date=context["date"]["monday"])
-            klass.l1lm = mondays.filter(lesson_no=1)
-            klass.l2lm = mondays.filter(lesson_no=2)
-            klass.l3lm = mondays.filter(lesson_no=3)
-            klass.l4lm = mondays.filter(lesson_no=4)
-            klass.l5lm = mondays.filter(lesson_no=5)
-            klass.l6lm = mondays.filter(lesson_no=6)
-            klass.l7lm = mondays.filter(lesson_no=7)
-
-            tuesdays = items.filter(date=context["date"]["tuesday"])
-            klass.l1ltu = tuesdays.filter(lesson_no=1)
-            klass.l2ltu = tuesdays.filter(lesson_no=2)
-            klass.l3ltu = tuesdays.filter(lesson_no=3)
-            klass.l4ltu = tuesdays.filter(lesson_no=4)
-            klass.l5ltu = tuesdays.filter(lesson_no=5)
-            klass.l6ltu = tuesdays.filter(lesson_no=6)
-            klass.l7ltu = tuesdays.filter(lesson_no=7)
-
-            wednesdays = items.filter(date=context["date"]["wednesday"])
-            klass.l1lwd = wednesdays.filter(lesson_no=1)
-            klass.l2lwd = wednesdays.filter(lesson_no=2)
-            klass.l3lwd = wednesdays.filter(lesson_no=3)
-            klass.l4lwd = wednesdays.filter(lesson_no=4)
-            klass.l5lwd = wednesdays.filter(lesson_no=5)
-            klass.l6lwd = wednesdays.filter(lesson_no=6)
-            klass.l7lwd = wednesdays.filter(lesson_no=7)
-
-            thursdays = items.filter(date=context["date"]["thursday"])
-            klass.l1lth = thursdays.filter(lesson_no=1)
-            klass.l2lth = thursdays.filter(lesson_no=2)
-            klass.l3lth = thursdays.filter(lesson_no=3)
-            klass.l4lth = thursdays.filter(lesson_no=4)
-            klass.l5lth = thursdays.filter(lesson_no=5)
-            klass.l6lth = thursdays.filter(lesson_no=6)
-            klass.l7lth = thursdays.filter(lesson_no=7)
-
-            fridays = items.filter(date=context["date"]["friday"])
-            klass.l1lf = fridays.filter(lesson_no=1)
-            klass.l2lf = fridays.filter(lesson_no=2)
-            klass.l3lf = fridays.filter(lesson_no=3)
-            klass.l4lf = fridays.filter(lesson_no=4)
-            klass.l5lf = fridays.filter(lesson_no=5)
-            klass.l6lf = fridays.filter(lesson_no=6)
-            klass.l7lf = fridays.filter(lesson_no=7)
-
-        context["classes"] = classes
-        return context
-
-
-class FullScheduleV2(TemplateView):
-    template_name = "full_schedule_v2.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        week = int(self.request.GET.get("week")) - 1
         sep1_week = datetime.date(year=datetime.date.today().year, month=9, day=1).isocalendar().week + week
         # В случае если 1 сентября не являестя понедельником, необходим первый день недели.
         first_day_on_school_year_week = datetime.datetime.strptime(f"{datetime.date.today().year}-W{sep1_week}" + '-1', "%Y-W%W-%w")
@@ -155,13 +89,105 @@ class FullScheduleV2(TemplateView):
 
 
 class HomeView(TemplateView):
-    template_name = 'home.html'
+    template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["classes"] = Class.objects.all().order_by("year", "letter_id")
+        return context
+
+
+class FullScheduleV2(TemplateView):
+    template_name = "full_schedule_v2.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        week = int(self.request.GET.get("week")) - 1
+        context["week"] = {
+            "next": week + 2,
+            "prev": week
+        }
+
+        sep1_week = datetime.date(year=datetime.date.today().year, month=9, day=1).isocalendar().week + week
+        # В случае если 1 сентября не являестя понедельником, необходим первый день недели.
+        first_day_on_school_year_week = datetime.datetime.strptime(f"{datetime.date.today().year}-W{sep1_week}" + '-1', "%Y-W%W-%w")
+        context["date"] = {
+            "monday": first_day_on_school_year_week.strftime("%Y-%m-%d"),
+            "tuesday": (first_day_on_school_year_week + datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
+            "wednesday": (first_day_on_school_year_week + datetime.timedelta(days=2)).strftime("%Y-%m-%d"),
+            "thursday": (first_day_on_school_year_week + datetime.timedelta(days=3)).strftime("%Y-%m-%d"),
+            "friday": (first_day_on_school_year_week + datetime.timedelta(days=4)).strftime("%Y-%m-%d")
+        }
+
+        classes = [*Class.objects.all().order_by("year", "letter_id")]
+        for klass in classes:
+
+            items = ScheduleItem.objects.filter(workload__klass_id=klass)
+
+            mondays = items.filter(date=context["date"]["monday"])
+            klass.l1lm = mondays.filter(lesson_no=1)
+            klass.l2lm = mondays.filter(lesson_no=2)
+            klass.l3lm = mondays.filter(lesson_no=3)
+            klass.l4lm = mondays.filter(lesson_no=4)
+            klass.l5lm = mondays.filter(lesson_no=5)
+            klass.l6lm = mondays.filter(lesson_no=6)
+            klass.l7lm = mondays.filter(lesson_no=7)
+
+            tuesdays = items.filter(date=context["date"]["tuesday"])
+            klass.l1ltu = tuesdays.filter(lesson_no=1)
+            klass.l2ltu = tuesdays.filter(lesson_no=2)
+            klass.l3ltu = tuesdays.filter(lesson_no=3)
+            klass.l4ltu = tuesdays.filter(lesson_no=4)
+            klass.l5ltu = tuesdays.filter(lesson_no=5)
+            klass.l6ltu = tuesdays.filter(lesson_no=6)
+            klass.l7ltu = tuesdays.filter(lesson_no=7)
+
+            wednesdays = items.filter(date=context["date"]["wednesday"])
+            klass.l1lwd = wednesdays.filter(lesson_no=1)
+            klass.l2lwd = wednesdays.filter(lesson_no=2)
+            klass.l3lwd = wednesdays.filter(lesson_no=3)
+            klass.l4lwd = wednesdays.filter(lesson_no=4)
+            klass.l5lwd = wednesdays.filter(lesson_no=5)
+            klass.l6lwd = wednesdays.filter(lesson_no=6)
+            klass.l7lwd = wednesdays.filter(lesson_no=7)
+
+            thursdays = items.filter(date=context["date"]["thursday"])
+            klass.l1lth = thursdays.filter(lesson_no=1)
+            klass.l2lth = thursdays.filter(lesson_no=2)
+            klass.l3lth = thursdays.filter(lesson_no=3)
+            klass.l4lth = thursdays.filter(lesson_no=4)
+            klass.l5lth = thursdays.filter(lesson_no=5)
+            klass.l6lth = thursdays.filter(lesson_no=6)
+            klass.l7lth = thursdays.filter(lesson_no=7)
+
+            fridays = items.filter(date=context["date"]["friday"])
+            klass.l1lf = fridays.filter(lesson_no=1)
+            klass.l2lf = fridays.filter(lesson_no=2)
+            klass.l3lf = fridays.filter(lesson_no=3)
+            klass.l4lf = fridays.filter(lesson_no=4)
+            klass.l5lf = fridays.filter(lesson_no=5)
+            klass.l6lf = fridays.filter(lesson_no=6)
+            klass.l7lf = fridays.filter(lesson_no=7)
+
+        context["classes"] = classes
+        return context
+
+
+class PerClassScheduleView(TemplateView):
+    template_name = 'per_class_schedule.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         class_ = self.request.GET.get("class")
         week = int(self.request.GET.get("week")) - 1
+
+        context["week"] = {
+            "next": week + 2,
+            "prev": week
+        }
+        context["class"] = class_
 
         context["meta"] = Class.objects.get(id=class_)
         sep1_week = datetime.date(year=datetime.date.today().year, month=9, day=1).isocalendar().week + week
@@ -256,6 +282,7 @@ def get_available_lesson_num_week(monday_date: datetime.datetime | datetime.date
     return available_lessons_no
 
 
+@user_passes_test(lambda user: user.is_superuser, login_url="/home/")
 def generate(request):
     WEEK_AMOUNT = 2
 
@@ -317,4 +344,4 @@ def generate(request):
                                                 workload=workload,
                                                 lesson_no=lesson_no_to_create)
 
-    return HttpResponse("ok")
+    return HttpResponse("<h1>Рассписание успешно сгенерировано!</h1><a href='/home'>← Домой</a>")

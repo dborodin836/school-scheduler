@@ -1,0 +1,118 @@
+{% load myfilters%}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Рассписания занятий {{ meta.name }}</h2>
+
+<table>
+
+  <tr>
+    <th>Урок №</th>
+    <th>Звонки</th>
+    <th>Понедельник ({{ meta_date_monday }})</th>
+    <th>Вторник ({{ meta_date_tuesday }})</th>
+    <th>Среда ({{ meta_date_wednesday }})</th>
+    <th>Четверг ({{ meta_date_thursday }})</th>
+    <th>Пятница ({{ meta_date_friday }})</th>
+  </tr>
+
+  <tr>
+    <td>1 Урок</td>
+    <td>8.30 - 9.15</td>
+    <td>{% if 1_m %}{{ 1_m|first }}{% endif %}</td>
+    <td>{% if 1_tu %}{{ 1_tu|first }}{% endif %}</td>
+    <td>{% if 1_wd %}{{ 1_wd|first }}{% endif %}</td>
+    <td>{% if 1_th %}{{ 1_th|first }}{% endif %}</td>
+    <td>{% if 1_f %}{{ 1_f|first }}{% endif %}</td>
+  </tr>
+
+  <tr>
+    <td>2 Урок</td>
+    <td>9.25 - 10.10</td>
+    <td>{% if 2_m %}{{ 2_m|first }}{% endif %}</td>
+    <td>{% if 2_tu %}{{ 2_tu|first }}{% endif %}</td>
+    <td>{% if 2_wd %}{{ 2_wd|first }}{% endif %}</td>
+    <td>{% if 2_th %}{{ 2_th|first }}{% endif %}</td>
+    <td>{% if 2_f %}{{ 2_f|first }}{% endif %}</td>
+  </tr>
+
+  <tr>
+    <td>3 Урок</td>
+    <td>10.20 - 11.05</td>
+    <td>{% if 3_m %}{{ 3_m|first }}{% endif %}</td>
+    <td>{% if 3_tu %}{{ 3_tu|first }}{% endif %}</td>
+    <td>{% if 3_wd %}{{ 3_wd|first }}{% endif %}</td>
+    <td>{% if 3_th %}{{ 3_th|first }}{% endif %}</td>
+    <td>{% if 3_f %}{{ 3_f|first }}{% endif %}</td>
+  </tr>
+
+  <tr>
+    <td>4 Урок</td>
+    <td>11.25 - 12.10</td>
+    <td>{% if 4_m %}{{ 4_m|first }}{% endif %}</td>
+    <td>{% if 4_tu %}{{ 4_tu|first }}{% endif %}</td>
+    <td>{% if 4_wd %}{{ 4_wd|first }}{% endif %}</td>
+    <td>{% if 4_th %}{{ 4_th|first }}{% endif %}</td>
+    <td>{% if 4_f %}{{ 4_f|first }}{% endif %}</td>
+  </tr>
+
+  <tr>
+    <td>5 Урок</td>
+    <td>12.30 - 13.15</td>
+    <td>{% if 5_m %}{{ 5_m|first }}{% endif %}</td>
+    <td>{% if 5_tu %}{{ 5_tu|first }}{% endif %}</td>
+    <td>{% if 5_wd %}{{ 5_wd|first }}{% endif %}</td>
+    <td>{% if 5_th %}{{ 5_th|first }}{% endif %}</td>
+    <td>{% if 5_f %}{{ 5_f|first }}{% endif %}</td>
+  </tr>
+
+  <tr>
+    <td>6 Урок</td>
+    <td>13.25 - 14.10</td>
+    <td>{% if 6_m %}{{ 6_m|first }}{% endif %}</td>
+    <td>{% if 6_tu %}{{ 6_tu|first }}{% endif %}</td>
+    <td>{% if 6_wd %}{{ 6_wd|first }}{% endif %}</td>
+    <td>{% if 6_th %}{{ 6_th|first }}{% endif %}</td>
+    <td>{% if 6_f %}{{ 6_f|first }}{% endif %}</td>
+  </tr>
+
+  <tr>
+    <td>7 Урок</td>
+    <td>14.20 - 15.05</td>
+    <td>{% if 7_m %}{{ 7_m|first }}{% endif %}</td>
+    <td>{% if 7_tu %}{{ 7_tu|first }}{% endif %}</td>
+    <td>{% if 7_wd %}{{ 7_wd|first }}{% endif %}</td>
+    <td>{% if 7_th %}{{ 7_th|first }}{% endif %}</td>
+    <td>{% if 7_f %}{{ 7_f|first }}{% endif %}</td>
+  </tr>
+
+</table>
+
+<div style="width: 20%; margin: 1rem auto auto;">
+    <span style="padding-right: 35px"><a {% if week.prev == 0 %}style="pointer-events: none"{% endif %} href="/per-class/?class={{ class }}&week={{ week.prev }}">← Назад</a></span>
+    <span style="padding-right: 35px"><a href='/home'>Домой</a></span>
+    <span><a {% if week.next == 19 %}style="pointer-events: none"{% endif %} href="/per-class/?class={{ class }}&week={{ week.next }}">Вперёд→</a></span>
+</div>
+
+</body>
+</html>
